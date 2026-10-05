@@ -37,6 +37,7 @@ class Mnist_ANN:
             b = self.bias[i]
 
             A_prev = A
+            #print(f"Weights: {len(W)}\nVector: {len(A)}")
             Z = W @ A + b
 
             if i < len(self.weights) - 1:
@@ -97,6 +98,9 @@ def eval_loss(
     pred = model.feed_forward(X.T)
     return cce(Y.T, pred)
 
+def calculateAccuracy():
+    ...
+
 def train(
         model: Mnist_ANN,
         train_data: np.ndarray,
@@ -144,9 +148,7 @@ def sgd(
     rng = np.random.default_rng(SEED)
     
     m = len(X)
-    theta = np.random.randn(2, 1)
 
-    X_bias = np.c_[np.ones((m, 1), X)]
     cost_history = {
         "Training Cost" : [],
         "Testing Cost" : [],
@@ -156,13 +158,17 @@ def sgd(
     for epoch in range(epochs):
         indicies = rng.permutation(m)
 
-        X_shuffled = X_bias[indicies]
+        X_shuffled = X[indicies]
         y_shuffled = y[indicies]
 
+        #batch_no = 1
+        #processed_samples = 0
+
         for i in range(0, m, batch_size):
+            #print(f"Processing batch {batch_no}...")
             end = i + batch_size
-            X_batch = X_shuffled[:, i : end]
-            y_batch = y_shuffled[:, i:end]
+            X_batch = X_shuffled[i:end].T
+            y_batch = y_shuffled[i:end].T
 
             y_pred = model.feed_forward(X_batch)
 
@@ -176,12 +182,17 @@ def sgd(
                 model.bias[i] -= (
                     LR * model.db[i]
                 )
-        
-        y_pred = model.feed_forward(X)
-        y_pred_test = model.feed_forward(X_test)
+            #processed_samples += batch_size
+            #print(f"Batch {batch_no} completed, {processed_samples} samples proccessed")
+            #batch_no += 1
 
-        train_cost = cce(y, y_pred)
-        test_cost = cce(y_test, y_pred_test)
+        #print(X.shape)
+        y_pred = model.feed_forward(X.T)
+        y_pred_test = model.feed_forward(X_test.T)
+
+        train_cost = cce(y.T, y_pred)
+        #print(f"Test truths shape {y_test.T.shape}\nTest predictions shape {y_pred_test.shape}")
+        test_cost = cce(y_test.T, y_pred_test)
 
         cost_history["Training Cost"].append(train_cost)
         cost_history["Testing Cost"].append(test_cost)

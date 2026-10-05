@@ -66,9 +66,9 @@ def plot_learning_errors(
         save_path: str | None = None,
         show: bool = True
     ):
-    train_loss = np.asarray(history.get("train_loss", []), dtype=float)
-    val_loss = np.asarray(history.get("val_loss", []), dtype=float)
-    epochs = np.asarray(history.get("epoch", range(1, len(train_loss) + 1)))
+    train_loss = np.asarray(history.get("Training Cost", []), dtype=float)
+    val_loss = np.asarray(history.get("Testing Cost", []), dtype=float)
+    epochs = np.asarray(history.get("Epoch", range(1, len(train_loss) + 1)))
 
     if train_loss.size == 0 or val_loss.size == 0:
         raise ValueError("History must contain training and validation losses.")

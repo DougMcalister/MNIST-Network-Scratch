@@ -50,7 +50,7 @@ training = sgd(
     i_train,
     l_train,
     i_test,
-    i_train,
+    l_test,
     BATCH,
     EPOCH
 )
@@ -94,8 +94,8 @@ cudaResults = run(
     testDataloader,
     EPOCH
 )
-results_summary(cpuResults, ANN_DIMS, EPOCH, BATCH, "PyTorch CPU")
-plot_learning_errors(cpuResults, ANN_DIMS, EPOCH, BATCH)
-
-results_summary(cudaResults, ANN_DIMS, EPOCH, BATCH, "PyTorch GPU")
-plot_learning_errors(cudaResults, ANN_DIMS, EPOCH, BATCH)
+#results_summary(cpuResults, ANN_DIMS, EPOCH, BATCH, "PyTorch CPU")
+#plot_learning_errors(cpuResults, ANN_DIMS, EPOCH, BATCH)
+#
+#results_summary(cudaResults, ANN_DIMS, EPOCH, BATCH, "PyTorch GPU")
+#plot_learning_errors(cudaResults, ANN_DIMS, EPOCH, BATCH)

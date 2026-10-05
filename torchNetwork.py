@@ -51,6 +51,7 @@ def train(
     total_loss = 0.0
 
     for X, y in dataloader:
+        X = X.float() / 255.0
         X = X.to(device)
         y = y.to(device)
 
@@ -78,6 +79,7 @@ def test(
 
     with torch.no_grad():
         for X, y in dataloader:
+            X = X.float() / 255.0
             X = X.to(device)
             y = y.to(device)
 
